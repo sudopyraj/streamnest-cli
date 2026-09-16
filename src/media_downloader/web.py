@@ -11,7 +11,7 @@ import tempfile
 from pathlib import Path
 from typing import Any
 
-from flask import Flask, jsonify, render_template_string, request, send_file
+from flask import Flask, jsonify, make_response, render_template_string, request, send_file
 from rich.console import Console
 
 from .config import Config
@@ -33,6 +33,8 @@ PAGE = """<!doctype html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1020">
+  <link rel="manifest" href="/manifest.webmanifest">
   <title>StreamNest — Save the good stuff</title>
   <style>
     :root { color-scheme: dark; --bg:#0b1020; --panel:#121a2d; --line:#263453;
@@ -90,6 +92,7 @@ $('kind').addEventListener('change',e=>{const audio=e.target.value==='audio'; $(
 $('download').addEventListener('click',async()=>{if(!inspected)return; $('download').disabled=true; $('status').textContent='Preparing your download…';
   try { const r=await fetch('/api/download',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:$('url').value,kind:$('kind').value,quality:$('quality').value,format:$('format').value})}); if(!r.ok){const d=await r.json();throw Error(d.error||'Download failed')} const blob=await r.blob(), a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='streamnest-download'; a.click(); URL.revokeObjectURL(a.href); $('status').textContent='Your download is ready.';
   } catch(err){$('status').textContent=err.message} finally {$('download').disabled=false}});
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');
 </script></body></html>"""
 
 
@@ -109,6 +112,33 @@ def _error_response(exc: Exception):
 @app.get("/")
 def index():
     return render_template_string(PAGE)
+
+
+@app.get("/manifest.webmanifest")
+def manifest():
+    response = make_response(jsonify({
+        "name": "StreamNest",
+        "short_name": "StreamNest",
+        "description": "A local media downloader for public YouTube and Instagram media.",
+        "start_url": "/",
+        "display": "standalone",
+        "background_color": "#0b1020",
+        "theme_color": "#0b1020",
+        "icons": [],
+    }))
+    response.headers["Content-Type"] = "application/manifest+json"
+    return response
+
+
+@app.get("/sw.js")
+def service_worker():
+    response = make_response(
+        "self.addEventListener('install', event => self.skipWaiting());"
+        "self.addEventListener('activate', event => self.clients.claim());"
+    )
+    response.headers["Content-Type"] = "application/javascript"
+    response.headers["Cache-Control"] = "no-cache"
+    return response
 
 
 @app.post("/api/analyze")

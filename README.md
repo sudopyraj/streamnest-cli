@@ -100,6 +100,30 @@ uses the same URL allow-list and public-content restrictions as the CLI. For
 large or long-running downloads, the CLI remains the recommended option
 because serverless hosts enforce request duration and temporary-storage limits.
 
+### Local companion for PC and Android
+
+For downloads that work from a user's own network, run the companion locally:
+
+```bash
+python companion.py
+```
+
+Then open `http://127.0.0.1:5000` in a PC browser and choose the browser's
+**Install StreamNest** option when available. This keeps extraction and
+downloads on the user's computer and avoids shared serverless IP blocks.
+
+On Android, the responsive interface can be opened in Chrome and added to the
+home screen. The Android device must be able to reach the companion service:
+
+```bash
+python companion.py --host 0.0.0.0
+```
+
+Open `http://<computer-lan-ip>:5000` on the phone. Keep the computer and phone
+on the same trusted Wi-Fi network; do not expose this service directly to the
+public internet. A standalone Android APK requires packaging the Python
+downloader with a native runtime and is a separate release artifact.
+
 The main menu provides:
 
 ```text
