@@ -48,8 +48,8 @@ from .utils import (
 log = logging.getLogger("media_downloader.cli")
 
 BANNER = """╔══════════════════════════════════════════════╗
-║          YT-INSTA DOWNLOADER                 ║
-║          Python Media Downloader             ║
+║                 STREAMNEST                   ║
+║       Interactive Terminal Downloader       ║
 ╚══════════════════════════════════════════════╝"""
 
 HELP_TEXT = f"""[bold]media-dl[/] — YouTube & Instagram media downloader (v{__version__})
