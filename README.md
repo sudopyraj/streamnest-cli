@@ -1,109 +1,282 @@
-<div align="center">
-🎬 StreamNest
-A free, open-source, beginner-friendly media downloader.
-License: MIT
 
-Python 3.10+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreamNest - Media Downloader</title>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --text-color: #c9d1d9;
+            --accent-color: #58a6ff;
+            --border-color: #30363d;
+            --code-bg: #161b22;
+            --warning-bg: #3b2e04;
+            --warning-border: #d29922;
+        }
 
-Open Source
-StreamNest provides a simple, interactive interface for downloading publicly accessible media from supported platforms. Choose an option, paste a URL, select your quality, and let StreamNest handle the rest.
-Features • Installation • Usage • Interfaces • Security
-</div>
-⚖️ Legal and Responsible Use
-> Important: StreamNest is a software tool. Whether you may download particular content depends on the content owner's permissions, applicable law, and the terms that govern the relevant service. You are responsible for how you use the software.
-> 
-StreamNest is provided as an open-source software project. The software itself does not determine whether a particular download is permitted. Before downloading content, make sure you have the necessary permission or other applicable legal basis to do so.
-You are responsible for complying with:
- * Applicable copyright law
- * Applicable local laws and regulations
- * The terms governing the platform or service
- * Restrictions imposed by the content owner
-Example: Downloading your own publicly accessible video for backup is different from downloading and redistributing someone else's copyrighted material without permission.
-Do not use StreamNest to obtain or redistribute content you are not legally permitted to access or copy. The StreamNest project does not provide legal advice and does not guarantee that every use of the software is lawful in every jurisdiction.
-✨ Features
-StreamNest is designed to be accessible to beginners without memorizing complex command-line flags.
-Supported Workflows
- * YouTube: Videos, Shorts, Playlists, and available public subtitles.
- * Instagram: Public posts and public Reels.
- * Audio Extraction: Convert media directly to audio.
- * Playlists: Download entire playlists or specify custom ranges (e.g., 1-5,7,10-12).
- * Resilience: Resume interrupted downloads safely.
-Download & Quality Management
-| Category | Capabilities |
-|---|---|
-| Quality Options | Best Quality, Balanced, Small File, Custom, Maximum File Size, or Format List. |
-| Audio Formats | MP3, M4A, Opus, or Original audio format. |
-| Management | Resume .part files, rich progress display, speed/ETA monitoring. |
-| Configuration | Customizable download directories, concurrent download limits, and theming. |
-| History | Local SQLite database for tracking, searching, and managing download history. |
-📦 Requirements
- * OS: Windows, macOS, or Linux
- * Python: 3.10 or newer
- * Internet connection
- * FFmpeg: Highly recommended (required for merging video/audio, format conversion, and subtitle embedding).
-🚀 Installation
-StreamNest uses a Python virtual environment (.venv) to isolate its dependencies. This prevents conflicts with your system's built-in Python packages and keeps your OS clean.
-<details open>
-<summary><b>Linux / macOS</b></summary>
-Open your terminal and run:
-git clone https://github.com/sudopyraj/streamnest-cli.git
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h1, h2, h3 {
+            color: #ffffff;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.3em;
+        }
+
+        h1 {
+            text-align: center;
+            border-bottom: none;
+            font-size: 2.5em;
+        }
+
+        p {
+            margin-bottom: 1em;
+        }
+
+        a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .important-note {
+            background-color: var(--warning-bg);
+            border-left: 4px solid var(--warning-border);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            padding: 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+            background-color: rgba(110, 118, 129, 0.4);
+            padding: 0.2em 0.4em;
+            border-radius: 6px;
+            font-size: 85%;
+        }
+
+        pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+
+        ul, ol {
+            padding-left: 2em;
+            margin-bottom: 1em;
+        }
+
+        .emoji-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tree {
+            line-height: 1.2;
+            color: #8b949e;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>StreamNest</h1>
+    
+    <p><strong>StreamNest</strong> is a free and open-source media downloader with a beginner-friendly interactive interface for downloading publicly accessible media from supported platforms.</p>
+    
+    <p>It is designed to be simple: start the application, choose an option from a menu, paste a URL, select the desired quality, and follow the prompts.</p>
+    
+    <p>No account is required. No advertising is built into StreamNest. The project does not operate a central download server for users.</p>
+
+    <div class="important-note">
+        <strong>«Important:</strong> StreamNest is a software tool. Whether you may download particular content depends on the content owner's permissions, applicable law, and the terms that govern the relevant service. You are responsible for how you use the software.<strong>»</strong>
+    </div>
+
+    <hr style="border: 1px solid var(--border-color); margin: 2em 0;">
+
+    <h2 class="emoji-header">✨ Features</h2>
+    
+    <h3>Simple interactive interface</h3>
+    <p>StreamNest is primarily designed around a guided terminal interface.</p>
+    <pre><code>1. Download Media
+2. Audio Only
+3. Download Playlist
+4. Download History
+5. Settings
+6. Help
+7. Exit</code></pre>
+    <p>You don't need to remember complicated command-line flags for normal use.</p>
+
+    <h3>Supported media workflows</h3>
+    <ul>
+        <li>YouTube videos</li>
+        <li>YouTube Shorts</li>
+        <li>YouTube playlists</li>
+        <li>Available public subtitles</li>
+        <li>Public Instagram posts</li>
+        <li>Public Instagram reels</li>
+        <li>Audio extraction</li>
+        <li>Playlist selection and ranges</li>
+        <li>Resume support for interrupted downloads</li>
+    </ul>
+
+    <h3>Quality options</h3>
+    <p>Choose from: Best Quality, Balanced, Small File, Custom, Maximum File Size, Format List.</p>
+    <p>For example: <code>1-5,7,10-12</code> can be used to select specific playlist items.</p>
+
+    <h3>Audio formats & Download Management</h3>
+    <ul>
+        <li>Formats: MP3, M4A, Opus, Original audio</li>
+        <li>Resume interrupted <code>.part</code> downloads</li>
+        <li>Rich progress display (Download speed, ETA, File size)</li>
+        <li>SQLite download history</li>
+        <li>Configurable download directory & concurrency</li>
+    </ul>
+
+    <h2 class="emoji-header">🔐 Safety and Privacy</h2>
+    <p>StreamNest is designed with a public-content-only scope. The project does not intentionally provide functionality to:</p>
+    <ul>
+        <li>access private accounts</li>
+        <li>bypass login requirements, CAPTCHA, or DRM</li>
+        <li>obtain passwords or authentication tokens</li>
+        <li>use private account cookies</li>
+        <li>circumvent technical restrictions protecting private or restricted content</li>
+    </ul>
+    <p>The application uses protected subprocess execution rather than passing user-controlled input through a shell. It stores download history and configuration locally. StreamNest does not intentionally store private credentials.</p>
+
+    <h2 class="emoji-header">⚖️ Legal and Responsible Use</h2>
+    <p>StreamNest is provided as an open-source software project. The software itself does not determine whether a particular download is permitted.</p>
+    <p>Before downloading content, make sure you have the necessary permission or other applicable legal basis to do so. You are responsible for complying with applicable copyright law, local regulations, and terms of service.</p>
+
+    <h2 class="emoji-header">🚫 Project Scope</h2>
+    <p>StreamNest intentionally focuses on publicly accessible media. It does not aim to become a tool for defeating platform security. If a download fails because the platform requires authentication or CAPTCHA, the appropriate behavior is to report the failure rather than attempt to bypass the restriction.</p>
+
+    <h2 class="emoji-header">📦 Requirements</h2>
+    <ul>
+        <li>Desktop: Python 3.10 or newer</li>
+        <li>Internet connection</li>
+        <li><strong>FFmpeg recommended</strong> (for merging streams, audio conversion, and subtitles)</li>
+    </ul>
+
+    <h2 class="emoji-header">🚀 Installation</h2>
+    
+    <h3>Linux / macOS</h3>
+    <pre><code>git clone https://github.com/sudopyraj/streamnest-cli.git
 cd streamnest-cli
 
-# Create and activate a virtual environment
 python3 -m venv .venv
 source .venv/bin/activate
 
-# Install StreamNest
 python -m pip install --upgrade pip
 python -m pip install -e .
 
-</details>
-<details>
-<summary><b>Windows PowerShell</b></summary>
-Open PowerShell and run:
-git clone https://github.com/sudopyraj/streamnest-cli.git
+python main.py</code></pre>
+
+    <h3>Windows PowerShell</h3>
+    <pre><code>git clone https://github.com/sudopyraj/streamnest-cli.git
 cd streamnest-cli
 
-# Create and activate a virtual environment
 py -m venv .venv
 .venv\Scripts\Activate.ps1
 
-# Install StreamNest
 python -m pip install --upgrade pip
 python -m pip install -e .
 
-</details>
-🎬 Install FFmpeg (Recommended)
-StreamNest detects FFmpeg automatically once installed on your system.
- * Ubuntu / Debian: sudo apt install ffmpeg
- * Fedora: sudo dnf install ffmpeg
- * Arch Linux: sudo pacman -S ffmpeg
- * macOS (Homebrew): brew install ffmpeg
- * Windows (WinGet): winget install Gyan.FFmpeg
-🖥️ First Launch & Usage
-Launch Commands
-Once installed, StreamNest is designed to be easy to start. You can launch the interactive application using any of the following commands:
-streamnest
+python main.py</code></pre>
 
-or
-media-dl
+    <h2 class="emoji-header">🎬 Install FFmpeg</h2>
+    <ul>
+        <li><strong>Ubuntu / Debian:</strong> <code>sudo apt install ffmpeg</code></li>
+        <li><strong>Fedora:</strong> <code>sudo dnf install ffmpeg</code></li>
+        <li><strong>Arch Linux:</strong> <code>sudo pacman -S ffmpeg</code></li>
+        <li><strong>macOS:</strong> <code>brew install ffmpeg</code></li>
+        <li><strong>Windows:</strong> <code>winget install Gyan.FFmpeg</code></li>
+    </ul>
 
-(Both commands launch the exact same beginner-friendly interface. You do not need to type python main.py every time if the package is installed correctly!)
-If you prefer to run it directly from the source directory, you can still use:
-python main.py
+    <h2 class="emoji-header">🌐 Web Interface & Companions</h2>
+    <p>StreamNest contains a lightweight web interface. Run: <code>flask --app main:app run</code></p>
+    <p>StreamNest can also run a local companion service: <code>python companion.py</code>. Only expose this to networks you trust.</p>
 
-The Interactive Workflow
-Downloading media takes just a few steps. You don't need to learn any complex commands.
- * Start StreamNest using one of the commands above.
- * Select an option from the menu (e.g., <kbd>1</kbd> for Download Media).
- * Paste a supported public URL when prompted.
- * StreamNest will validate the URL and retrieve metadata (Title, Duration, etc.).
- * Select quality and output format from the simple numbered lists.
- * The download begins with a rich progress bar.
- * View your completed file in your configured download directory!
-Example Terminal Session:
-StreamNest
+    <h2 class="emoji-header">📱 Android</h2>
+    <p>StreamNest has an experimental standalone Android application (Android 10 / API 29+). You can find the latest APK on the <a href="https://github.com/sudopyraj/streamnest-cli/releases">GitHub Releases page</a>.</p>
 
+    <h2 class="emoji-header">🗂️ Project Structure</h2>
+    <pre class="tree"><code>streamnest-cli/
+├── main.py
+├── companion.py
+├── pyproject.toml
+├── LICENSE
+├── README.md
+│
+├── src/
+│   └── media_downloader/
+│       ├── cli.py
+│       └── ...
+└── tests/</code></pre>
+
+    <h2 class="emoji-header">🤝 Contributing</h2>
+    <p>StreamNest is an open-source project and contributions are welcome. Please keep changes focused and avoid introducing functionality that defeats authentication, CAPTCHA, DRM, or other access controls.</p>
+
+    <h2 class="emoji-header">📜 License</h2>
+    <p>StreamNest is released under the MIT License. Copyright (c) 2026 Prince Raj. See <code>LICENSE</code> for the complete text.</p>
+
+    <hr style="border: 1px solid var(--border-color); margin: 2em 0;">
+    
+    <h2 class="emoji-header">🌱 Project Philosophy</h2>
+    <p align="center"><em>«A useful open-source tool should be simple, transparent, and respectful of its users.»</em></p>
+    
+    <p><strong>GitHub Repository:</strong> <a href="https://github.com/sudopyraj/streamnest-cli">https://github.com/sudopyraj/streamnest-cli</a></p>
+
+</body>
+</html>
+
+Option 2: GitHub-Optimized README.md (Highly Recommended)
+Copy and paste this directly into your README.md file on GitHub. It uses a mix of Markdown and GitHub-supported HTML to look fantastic on the repository page.
+<h1 align="center">StreamNest</h1>
+
+<p align="center">
+  <em>A free and open-source media downloader with a beginner-friendly interactive interface for downloading publicly accessible media from supported platforms.</em>
+</p>
+
+<p align="center">
+  <a href="https://github.com/sudopyraj/streamnest-cli"><strong>View Repository</strong></a> ·
+  <a href="#-installation"><strong>Install</strong></a> ·
+  <a href="#-android"><strong>Android App</strong></a>
+</p>
+
+---
+
+It is designed to be simple: start the application, choose an option from a menu, paste a URL, select the desired quality, and follow the prompts. No account is required. No advertising is built into StreamNest. The project does not operate a central download server for users.
+
+> **Important:** StreamNest is a software tool. Whether you may download particular content depends on the content owner's permissions, applicable law, and the terms that govern the relevant service. You are responsible for how you use the software.
+
+## ✨ Features
+
+### Simple interactive interface
+StreamNest is primarily designed around a guided terminal interface. You don't need to remember complicated command-line flags for normal use.
+
+```text
 1. Download Media
 2. Audio Only
 3. Download Playlist
@@ -112,112 +285,89 @@ StreamNest
 6. Help
 7. Exit
 
-Select an option: 1
+<details>
+<summary><strong>Supported Media Workflows & Quality Options (Click to expand)</strong></summary>
+ * YouTube videos, Shorts, and playlists
+ * Available public subtitles
+ * Public Instagram posts and reels
+ * Audio extraction
+ * Playlist selection and ranges (e.g., 1-5,7,10-12)
+ * Resume support for interrupted downloads
+Quality Options:
+Best Quality, Balanced, Small File, Custom, Maximum File Size, Format List.
+</details>
+🔐 Safety and Privacy
+StreamNest is designed with a public-content-only scope.
+The project does not intentionally provide functionality to:
+ * Access private accounts
+ * Bypass login requirements, CAPTCHA, or DRM
+ * Obtain passwords or authentication tokens
+ * Circumvent technical restrictions protecting private content
+Local data (history, config) is stored on your machine. StreamNest does not store passwords or private credentials.
+📦 Requirements
+ * Desktop: Python 3.10 or newer
+ * Internet connection
+ * FFmpeg recommended (Required for merging video/audio streams and embedding subtitles).
+🚀 Installation
+Linux / macOS
+git clone [https://github.com/sudopyraj/streamnest-cli.git](https://github.com/sudopyraj/streamnest-cli.git)
+cd streamnest-cli
 
-Enter media URL:
-> https://example.com/...
+python3 -m venv .venv
+source .venv/bin/activate
 
-Checking URL...
-Retrieving media information...
+python -m pip install --upgrade pip
+python -m pip install -e .
 
-Title: Example Video
-Duration: 05:42
+# Start StreamNest
+python main.py
 
-Choose quality:
-1. Best Quality
-2. Balanced
-3. Small File
-4. Custom
-5. Maximum File Size
-6. Choose from format list
+Windows PowerShell
+git clone [https://github.com/sudopyraj/streamnest-cli.git](https://github.com/sudopyraj/streamnest-cli.git)
+cd streamnest-cli
 
-Select: 2
+py -m venv .venv
+.venv\Scripts\Activate.ps1
 
-📱 Ecosystem & Interfaces
-StreamNest offers several ways to interact with the downloader depending on your needs.
-Android Capabilities
-StreamNest includes support for Android workflows, segmented into two distinct modes:
-| Mode | PC Required? | Description |
-|---|---|---|
-| Android Companion | Yes | The Android device connects over a local network to StreamNest running on your PC. |
-| Standalone Android (Experimental) | No | The downloader runs directly on the Android device itself. |
-Note: The Standalone Android version is currently Experimental. It may have known limitations regarding performance, handling very large downloads, background downloading, and specific format detection compared to the desktop version.
-Local PC Companion
-You can run StreamNest as a local companion service to trigger downloads from another device.
-Start the companion locally:
-python companion.py
+python -m pip install --upgrade pip
+python -m pip install -e .
 
-Allow LAN devices to connect:
-python companion.py --host 0.0.0.0
+# Start StreamNest
+python main.py
 
-Then open http://<computer-lan-ip>:5000 on your other device (like your phone).
-> ⚠️ Security Warning: Only expose the companion service to networks you completely trust (like your home Wi-Fi). Do not expose the companion service directly to the public internet.
-> 
-Web Interface
-StreamNest contains a lightweight local web interface. It follows the exact same public-content and URL-validation rules as the CLI.
-Start the web interface:
+🎬 Install FFmpeg
+FFmpeg is strongly recommended for the best experience.
+ * Ubuntu/Debian: sudo apt install ffmpeg
+ * macOS (Homebrew): brew install ffmpeg
+ * Windows (WinGet): winget install Gyan.FFmpeg
+ * Arch Linux: sudo pacman -S ffmpeg
+🌐 Web Interface & PC Companion
+StreamNest contains a lightweight web interface:
 flask --app main:app run
 
-Then open: [http://127.0.0.1:5000](http://127.0.0.1:5000)
-> Important: This interface is meant for local network use, NOT as a public centralized download service. For large or long-running downloads, the local CLI application is heavily preferred to avoid serverless timeouts, bandwidth limits, and storage constraints.
-> 
-<details>
-<summary><b>Advanced Command Interface</b></summary>
-While the interactive interface is highly recommended for beginners, StreamNest retains an advanced command-line interface for scripting and experienced power users. Run <code>streamnest --help</code> to view available programmatic flags.
-</details>
-🔐 Security and Privacy
-StreamNest prioritizes user security and operates with a strict public-content-only scope.
-The application validates supported URLs, treats remote filenames as untrusted input, and uses protected subprocess execution (avoiding dangerous shell injections).
-StreamNest does NOT intentionally provide functionality to:
- * Access private accounts or bypass login requirements
- * Bypass CAPTCHAs, DRM, or other access controls
- * Obtain passwords or authentication tokens
- * Use private account cookies
- * Circumvent technical restrictions protecting private content
-Data Storage
-Stored Locally:
-StreamNest stores your download history and configuration locally on your machine.
- * Media title, URL, platform, download status, timestamp, output path, and file size.
- * History: ~/.local/share/media-downloader/history.sqlite3
- * Config: ~/.config/media-downloader/config.toml
-Not Intentionally Stored:
- * Passwords or private account credentials
- * Authentication tokens
- * Browser cookies
-🛠️ Development & Contributing
-Project Structure
-streamnest-cli/
-├── main.py            # Main interactive entry point
-├── companion.py       # PC Companion service
-├── streamnest/        # Core application package
-├── tests/             # Test suite
-├── setup.py           # Package configuration
-└── README.md
+Open http://127.0.0.1:5000 in your browser.
+You can also run a local companion service (python companion.py). Security warning: Only expose the companion service to networks you trust.
+📱 Android (Experimental)
+StreamNest has a standalone Android application under active development targeting Android 10 (API 29+).
+ * Download the current experimental APK release here.
+💻 Advanced Command Interface
+Experienced users can bypass the interactive menu:
+media-dl "URL" --quality 1080p
+media-dl "URL" --audio --format mp3
+media-dl "PLAYLIST_URL" --playlist-items 1-5,7
 
-Setup for Development
-To work on StreamNest, ensure you set up the virtual environment as detailed in the installation section.
-StreamNest welcomes contributions in areas already supported by the project (e.g., UI improvements, platform fixes for public content, test coverage).
-Testing
-Run the test suite to ensure your changes don't break existing functionality:
-# Ensure you are in your active virtual environment
-python -m unittest discover tests/
+🤝 Contributing
+Contributions are welcome! Please keep changes focused and avoid introducing functionality that defeats authentication, CAPTCHA, DRM, or other access controls.
+# Setup dev environment
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -e ".[dev]"
+python -m pytest
 
-Bug Reporting
-When reporting a bug on GitHub, please include terminal output, the OS you are using, and the expected behavior.
-Do NOT post:
- * Passwords, cookies, or authentication tokens
- * Private URLs or personal account information
- * Any personal data
-📝 Philosophy & Scope
-Project Philosophy:
- * Free & Open Source
- * No built-in advertising or mandatory accounts
- * Privacy and security-conscious
- * Beginner-friendly & Local-first
- * Publicly accessible content only
-Project Scope:
-StreamNest intentionally focuses on publicly accessible media. The project does not aim to become a tool for defeating platform security. If a download fails because a platform requires authentication, DRM, or CAPTCHA, the appropriate behavior is to report the failure—not to attempt to bypass the restriction.
-<div align="center">
-<p>Released under the <a href="[https://github.com/sudopyraj/streamnest-cli/blob/main/LICENSE](https://github.com/sudopyraj/streamnest-cli/blob/main/LICENSE)">MIT License</a>.</p>
-<p><a href="[https://github.com/sudopyraj/streamnest-cli](https://github.com/sudopyraj/streamnest-cli)">GitHub Repository</a></p>
-</div>
+📜 License & Legal
+MIT License - Copyright (c) 2026 Prince Raj.
+StreamNest is provided "as is". The project does not guarantee availability of any particular platform or that a particular use of the software is legally permitted. Users are responsible for ensuring that their downloads comply with applicable law.
+<p align="center">
+<em>«A useful open-source tool should be simple, transparent, and respectful of its users.»</em>
+</p>
+
