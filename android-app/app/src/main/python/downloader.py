@@ -6,8 +6,8 @@ import yt_dlp
 
 def resolve(url: str, quality: str) -> str:
     height = {"best": None, "1080p": 1080, "720p": 720, "480p": 480}.get(quality)
-    video = "bestvideo"
-    audio = "bestaudio"
+    video = "bestvideo[ext=mp4]"
+    audio = "bestaudio[ext=m4a]"
     if height:
         video += f"[height<={height}]"
     options = {"quiet": True, "no_warnings": True, "noplaylist": True}

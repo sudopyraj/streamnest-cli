@@ -3,6 +3,10 @@ package com.streamnest.android;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Environment;
+import android.media.MediaExtractor;
+import android.media.MediaFormat;
+import android.media.MediaMuxer;
+import android.media.MediaCodec;
 import android.view.Gravity;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -11,8 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.arthenica.ffmpegkit.FFmpegKit;
-import com.arthenica.ffmpegkit.ReturnCode;
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
@@ -107,16 +109,8 @@ public final class MainActivity extends Activity {
                     downloadFile(stream.getString("url"), target);
                     if ("audio".equals(stream.getString("kind"))) audio = target; else video = target;
                 }
-                final File videoFile = video;
-                final File audioFile = audio;
                 runOnUiThread(() -> status.setText("Merging media…"));
-                String command = audioFile == null
-                        ? "-y -i " + quote(videoFile.getAbsolutePath()) + " -c copy " + quote(output.getAbsolutePath())
-                        : "-y -i " + quote(videoFile.getAbsolutePath()) + " -i " + quote(audioFile.getAbsolutePath())
-                        + " -c copy -movflags +faststart " + quote(output.getAbsolutePath());
-                if (!ReturnCode.isSuccess(FFmpegKit.execute(command).getReturnCode())) {
-                    throw new IllegalStateException("FFmpeg could not merge this media.");
-                }
+                muxMedia(video, audio, output);
                 runOnUiThread(() -> {
                     status.setText("Saved to Downloads/" + output.getName());
                     download.setEnabled(true);
@@ -145,7 +139,68 @@ public final class MainActivity extends Activity {
         }
     }
 
-    private String quote(String path) { return "'" + path.replace("'", "'\\''") + "'"; }
+    private void muxMedia(File video, File audio, File output) throws Exception {
+        MediaMuxer muxer = new MediaMuxer(output.getAbsolutePath(), MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4);
+        try {
+            int videoTrack = addTrack(muxer, video);
+            int audioTrack = audio == null ? -1 : addTrack(muxer, audio);
+            muxer.start();
+            writeTrack(muxer, video, videoTrack);
+            if (audio != null) writeTrack(muxer, audio, audioTrack);
+        } finally {
+            muxer.stop();
+            muxer.release();
+        }
+    }
+
+    private int addTrack(MediaMuxer muxer, File source) throws Exception {
+        MediaExtractor extractor = new MediaExtractor();
+        extractor.setDataSource(source.getAbsolutePath());
+        for (int i = 0; i < extractor.getTrackCount(); i++) {
+            MediaFormat format = extractor.getTrackFormat(i);
+            String mime = format.getString(MediaFormat.KEY_MIME);
+            if (mime != null && (mime.startsWith("video/") || mime.startsWith("audio/"))) {
+                extractor.release();
+                MediaExtractor probe = new MediaExtractor();
+                probe.setDataSource(source.getAbsolutePath());
+                probe.selectTrack(i);
+                MediaFormat selected = probe.getTrackFormat(i);
+                probe.release();
+                return muxer.addTrack(selected);
+            }
+        }
+        extractor.release();
+        throw new IllegalStateException("Downloaded media has no compatible MP4 track.");
+    }
+
+    private void writeTrack(MediaMuxer muxer, File source, int outputTrack) throws Exception {
+        MediaExtractor extractor = new MediaExtractor();
+        extractor.setDataSource(source.getAbsolutePath());
+        int selected = -1;
+        for (int i = 0; i < extractor.getTrackCount(); i++) {
+            String mime = extractor.getTrackFormat(i).getString(MediaFormat.KEY_MIME);
+            if (mime != null && (mime.startsWith("video/") || mime.startsWith("audio/"))) {
+                selected = i;
+                break;
+            }
+        }
+        if (selected < 0) throw new IllegalStateException("No compatible media track.");
+        extractor.selectTrack(selected);
+        java.nio.ByteBuffer buffer = java.nio.ByteBuffer.allocate(1024 * 1024);
+        MediaCodec.BufferInfo info = new MediaCodec.BufferInfo();
+        while (true) {
+            int size = extractor.readSampleData(buffer, 0);
+            if (size < 0) break;
+            info.offset = 0;
+            info.size = size;
+            info.presentationTimeUs = extractor.getSampleTime();
+            info.flags = extractor.getSampleFlags();
+            muxer.writeSampleData(outputTrack, buffer, info);
+            extractor.advance();
+        }
+        extractor.release();
+    }
+
     private String safeName(String value) {
         String clean = value.replaceAll("[\\\\/:*?\"<>|]", "_").trim();
         return clean.isEmpty() ? "streamnest-download" : clean.substring(0, Math.min(clean.length(), 120));
