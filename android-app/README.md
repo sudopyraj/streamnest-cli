@@ -26,6 +26,10 @@ Install from a terminal with:
 adb install -r app/build/outputs/apk/debug/app-debug.apk
 ```
 
+Every push that changes `android-app/` also runs the **Android APK** GitHub
+Actions workflow. Download the generated `streamnest-debug-apk` artifact from
+the workflow run if Android Studio is not available.
+
 ## Use
 
 On the PC:
