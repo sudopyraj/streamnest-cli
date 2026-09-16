@@ -8,6 +8,11 @@ guided prompts instead of remembering flags or command syntax.
 [**Download the Android APK**](https://github.com/sudopyraj/streamnest-cli/releases/download/v1.0.2-android/app-standalone-debug.apk)
  · [View the release](https://github.com/sudopyraj/streamnest-cli/releases/tag/v1.0.2-android)
 
+> **Android status:** The Android version is currently not working reliably.
+> I am actively working on fixing it. Please use the **PC version** for now.
+> The Android APK is available for testing, but downloads may fail or remain
+> stuck during format detection.
+
 > Download only content you have permission to download. Respect platform
 > terms of service and applicable copyright law.
 
