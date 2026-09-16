@@ -2,6 +2,9 @@ package com.streamnest.android;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.media.MediaExtractor;
@@ -10,10 +13,13 @@ import android.media.MediaMuxer;
 import android.media.MediaCodec;
 import android.provider.MediaStore;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -40,6 +46,7 @@ public final class MainActivity extends Activity {
     private Spinner quality;
     private TextView status;
     private Button download;
+    private ProgressBar progress;
 
     @Override
     protected void onCreate(Bundle state) {
@@ -49,36 +56,77 @@ public final class MainActivity extends Activity {
     }
 
     private void showScreen() {
+        ScrollView scroll = new ScrollView(this);
+        scroll.setBackgroundColor(0xFF0B1020);
         LinearLayout root = new LinearLayout(this);
         root.setOrientation(LinearLayout.VERTICAL);
-        root.setPadding(36, 56, 36, 24);
-        root.setBackgroundColor(0xFF0B1020);
+        root.setPadding(24, 28, 24, 32);
+        scroll.addView(root);
 
-        TextView title = text("StreamNest", 32, 0xFFFFFFFF);
-        root.addView(title, params(0, 12));
-        TextView subtitle = text("Download public YouTube videos directly on Android.", 16, 0xFFB7C1D9);
-        root.addView(subtitle, params(0, 28));
+        LinearLayout appHeader = new LinearLayout(this);
+        appHeader.setGravity(Gravity.CENTER_VERTICAL);
+        TextView logo = text("S", 30, Color.WHITE);
+        logo.setGravity(Gravity.CENTER);
+        logo.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        logo.setBackground(round(0xFF7C6CFF, 20));
+        appHeader.addView(logo, fixed(64, 64, 16));
+        LinearLayout appCopy = column();
+        TextView title = text("StreamNest", 24, Color.WHITE);
+        title.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        appCopy.addView(title);
+        appCopy.addView(text("Public media downloader", 14, 0xFF9AA8C5));
+        appHeader.addView(appCopy, params(0, 0));
+        root.addView(appHeader, params(0, 28));
 
+        TextView heading = text("Download videos\nwithout the clutter.", 30, Color.WHITE);
+        heading.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        root.addView(heading, params(0, 10));
+        root.addView(text("Paste a public YouTube link and save a clean MP4 to your Downloads folder.", 15, 0xFFB7C1D9), params(0, 22));
+
+        LinearLayout linkCard = card();
+        TextView linkLabel = text("VIDEO LINK", 12, 0xFF9AA8C5);
+        linkLabel.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        linkCard.addView(linkLabel, params(0, 4));
         urlInput = new EditText(this);
-        urlInput.setHint("Paste a YouTube URL");
+        urlInput.setHint("https://youtube.com/watch?v=…");
         urlInput.setSingleLine(true);
-        urlInput.setTextColor(0xFFFFFFFF);
-        urlInput.setHintTextColor(0xFF7F8BA8);
-        root.addView(urlInput, params(0, 14));
+        urlInput.setTextColor(Color.WHITE);
+        urlInput.setHintTextColor(0xFF6F7D9D);
+        urlInput.setTextSize(16);
+        urlInput.setBackgroundColor(Color.TRANSPARENT);
+        urlInput.setPadding(0, 4, 0, 0);
+        linkCard.addView(urlInput, params(0, 0));
+        root.addView(linkCard, params(0, 14));
 
+        LinearLayout qualityCard = card();
+        TextView qualityLabel = text("DOWNLOAD QUALITY", 12, 0xFF9AA8C5);
+        qualityLabel.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        qualityCard.addView(qualityLabel, params(0, 2));
         quality = new Spinner(this);
         quality.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
                 new String[]{"Best available", "Up to 1080p", "Up to 720p", "Up to 480p"}));
-        root.addView(quality, params(0, 16));
+        qualityCard.addView(quality, params(0, 0));
+        root.addView(qualityCard, params(0, 18));
 
         download = new Button(this);
-        download.setText("Download");
+        download.setText("Download video");
+        download.setTextColor(Color.WHITE);
+        download.setTextSize(16);
+        download.setAllCaps(false);
+        download.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        download.setBackground(round(0xFF7C6CFF, 18));
         download.setOnClickListener(view -> startDownload());
-        root.addView(download, params(0, 18));
+        root.addView(download, params(0, 16));
 
-        status = text("Files are saved to the Android Downloads folder.", 14, 0xFF9AA8C5);
+        progress = new ProgressBar(this);
+        progress.setIndeterminate(true);
+        progress.setVisibility(View.GONE);
+        root.addView(progress, centered(0, 12));
+
+        status = text("Ready to download · Files are saved in Downloads", 14, 0xFF9AA8C5);
+        status.setGravity(Gravity.CENTER);
         root.addView(status, params(0, 0));
-        setContentView(root);
+        setContentView(scroll);
     }
 
     private void startDownload() {
@@ -88,6 +136,8 @@ public final class MainActivity extends Activity {
             return;
         }
         download.setEnabled(false);
+        progress.setVisibility(View.VISIBLE);
+        download.setText("Preparing download…");
         status.setText("Connecting to YouTube…");
         String selected = quality.getSelectedItem().toString();
         String qualityKey = selected.startsWith("Up to 1080") ? "1080p"
@@ -117,12 +167,16 @@ public final class MainActivity extends Activity {
                 String savedName = publishDownload(output, title + ".mp4");
                 runOnUiThread(() -> {
                     status.setText("Saved to Downloads/" + savedName);
+                    progress.setVisibility(View.GONE);
+                    download.setText("Download another video");
                     download.setEnabled(true);
                 });
             } catch (Exception error) {
                 runOnUiThread(() -> {
                     String message = error.getMessage() == null ? "Download failed." : error.getMessage();
                     status.setText(message.replace("java.lang.Exception:", "").trim());
+                    progress.setVisibility(View.GONE);
+                    download.setText("Try again");
                     download.setEnabled(true);
                 });
             }
@@ -239,12 +293,40 @@ public final class MainActivity extends Activity {
         String clean = value.replaceAll("[\\\\/:*?\"<>|]", "_").trim();
         return clean.isEmpty() ? "streamnest-download" : clean.substring(0, Math.min(clean.length(), 120));
     }
+    private LinearLayout column() {
+        LinearLayout view = new LinearLayout(this);
+        view.setOrientation(LinearLayout.VERTICAL);
+        view.setPadding(16, 0, 0, 0);
+        return view;
+    }
+    private LinearLayout card() {
+        LinearLayout view = column();
+        view.setPadding(18, 14, 18, 12);
+        view.setBackground(round(0xFF151F36, 18));
+        return view;
+    }
+    private GradientDrawable round(int color, int radius) {
+        GradientDrawable drawable = new GradientDrawable();
+        drawable.setColor(color);
+        drawable.setCornerRadius(radius);
+        return drawable;
+    }
     private TextView text(String value, int size, int color) {
         TextView view = new TextView(this); view.setText(value); view.setTextSize(size); view.setTextColor(color); return view;
     }
     private LinearLayout.LayoutParams params(int width, int bottom) {
         LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(width == 0 ? -1 : width, -2);
         p.bottomMargin = bottom; return p;
+    }
+    private LinearLayout.LayoutParams fixed(int width, int height, int right) {
+        LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(width, height);
+        p.rightMargin = right;
+        return p;
+    }
+    private LinearLayout.LayoutParams centered(int width, int bottom) {
+        LinearLayout.LayoutParams p = params(width, bottom);
+        p.gravity = Gravity.CENTER_HORIZONTAL;
+        return p;
     }
     @Override protected void onDestroy() { executor.shutdownNow(); super.onDestroy(); }
 }
