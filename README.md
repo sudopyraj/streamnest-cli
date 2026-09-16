@@ -124,6 +124,15 @@ on the same trusted Wi-Fi network; do not expose this service directly to the
 public internet. A standalone Android APK requires packaging the Python
 downloader with a native runtime and is a separate release artifact.
 
+### Android APK
+
+The separate open-source Android companion project is in [`android-app/`](android-app/).
+It provides a native Android shell for the local companion, remembers the
+companion address, supports Android downloads, and does not request accounts,
+passwords, or browser cookies. See
+[`android-app/README.md`](android-app/README.md) for Android Studio build and
+installation instructions.
+
 The main menu provides:
 
 ```text

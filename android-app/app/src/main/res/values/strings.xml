@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">StreamNest</string>
+    <string name="companion_url_hint">http://192.168.1.25:5000</string>
+    <string name="connect">Connect</string>
+    <string name="save_and_connect">Save and connect</string>
+    <string name="change_server">Change companion</string>
+    <string name="server_title">Connect your local companion</string>
+    <string name="server_description">Run companion.py on your PC, then enter its local address. Your downloads stay on your own network.</string>
+    <string name="invalid_url">Enter a valid http:// or https:// companion URL.</string>
+    <string name="connection_help">PC command: python companion.py --host 0.0.0.0\nUse the PC's LAN IP, for example http://192.168.1.25:5000.</string>
+</resources>
