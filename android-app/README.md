@@ -10,6 +10,7 @@ still available in the main repository for PC-assisted use.
 - Android Studio Ladybug or newer (Gradle 8.9)
 - Android SDK 35
 - Internet access on the Android device
+- Android 10 (API 29) or newer
 
 ## Build the APK
 

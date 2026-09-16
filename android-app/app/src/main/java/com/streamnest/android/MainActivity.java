@@ -1,12 +1,14 @@
 package com.streamnest.android;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.os.Environment;
 import android.media.MediaExtractor;
 import android.media.MediaFormat;
 import android.media.MediaMuxer;
 import android.media.MediaCodec;
+import android.provider.MediaStore;
 import android.view.Gravity;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -25,6 +27,7 @@ import org.json.JSONObject;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -97,10 +100,9 @@ public final class MainActivity extends Activity {
                 JSONObject media = new JSONObject(result.toString());
                 JSONArray streams = media.getJSONArray("streams");
                 String title = safeName(media.getString("title"));
-                File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
                 File work = new File(getCacheDir(), "streamnest");
                 if (!work.exists() && !work.mkdirs()) throw new IllegalStateException("Cannot create temporary directory.");
-                File output = new File(dir, title + ".mp4");
+                File output = new File(work, title + ".mp4");
                 File video = null;
                 File audio = null;
                 for (int i = 0; i < streams.length(); i++) {
@@ -111,8 +113,9 @@ public final class MainActivity extends Activity {
                 }
                 runOnUiThread(() -> status.setText("Merging media…"));
                 muxMedia(video, audio, output);
+                String savedName = publishDownload(output, title + ".mp4");
                 runOnUiThread(() -> {
-                    status.setText("Saved to Downloads/" + output.getName());
+                    status.setText("Saved to Downloads/" + savedName);
                     download.setEnabled(true);
                 });
             } catch (Exception error) {
@@ -137,6 +140,35 @@ public final class MainActivity extends Activity {
         } finally {
             connection.disconnect();
         }
+    }
+
+    private String publishDownload(File source, String name) throws Exception {
+        if (android.os.Build.VERSION.SDK_INT >= 29) {
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.Downloads.DISPLAY_NAME, name);
+            values.put(MediaStore.Downloads.MIME_TYPE, "video/mp4");
+            values.put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
+            android.net.Uri uri = getContentResolver().insert(
+                    MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
+            if (uri == null) throw new IllegalStateException("Android could not create the Downloads file.");
+            try (FileInputStream input = new FileInputStream(source);
+                 java.io.OutputStream output = getContentResolver().openOutputStream(uri)) {
+                if (output == null) throw new IllegalStateException("Android could not open the Downloads file.");
+                byte[] buffer = new byte[1024 * 64];
+                int count;
+                while ((count = input.read(buffer)) != -1) output.write(buffer, 0, count);
+            }
+            return name;
+        }
+        File downloads = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        File destination = new File(downloads, name);
+        try (FileInputStream input = new FileInputStream(source);
+             FileOutputStream output = new FileOutputStream(destination)) {
+            byte[] buffer = new byte[1024 * 64];
+            int count;
+            while ((count = input.read(buffer)) != -1) output.write(buffer, 0, count);
+        }
+        return destination.getName();
     }
 
     private void muxMedia(File video, File audio, File output) throws Exception {
