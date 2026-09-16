@@ -1,9 +1,10 @@
 # StreamNest Android
 
 An open-source Android app for StreamNest. The standalone APK embeds the
-`yt-dlp` Python runtime and FFmpeg processing, so public YouTube downloads can
-run directly on the phone without a PC. The original local-companion mode is
-still available in the main repository for PC-assisted use.
+`yt-dlp` Python runtime and Android's native media muxer, so public YouTube
+downloads can run directly on the phone without a PC. The original
+local-companion mode is still available in the main repository for PC-assisted
+use.
 
 ## Requirements
 
@@ -35,15 +36,16 @@ the workflow run if Android Studio is not available.
 
 Launch StreamNest on Android, paste a public YouTube URL, select a quality, and
 tap **Download**. The app resolves separate video/audio streams and uses
-FFmpeg to merge them into an MP4 in the Downloads directory.
+FFmpeg to merge them into an MP4 in the Downloads directory. The app combines compatible MP4 video and M4A audio
+tracks without re-encoding.
 
 The app does not request accounts, passwords, browser cookies, contacts, or
 unrelated device permissions. It supports public YouTube media only in this
 first standalone release. Login-gated, age-restricted, private, CAPTCHA, or
 otherwise unavailable media can still fail.
 
-The APK is larger than the companion-only build because it includes Python,
-yt-dlp, and native media processing libraries.
+The APK is larger than the companion-only build because it includes Python and
+yt-dlp.
 
 ## License
 
