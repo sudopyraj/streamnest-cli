@@ -19,13 +19,13 @@ Open this `android-app` directory in Android Studio, allow Gradle to sync, then
 choose **Build > Build APK(s)**. The debug APK is written to:
 
 ```text
-app/build/outputs/apk/debug/app-debug.apk
+app/build/outputs/apk/standalone/debug/app-standalone-debug.apk
 ```
 
 Install from a terminal with:
 
 ```bash
-adb install -r app/build/outputs/apk/debug/app-debug.apk
+adb install -r app/build/outputs/apk/standalone/debug/app-standalone-debug.apk
 ```
 
 Every push that changes `android-app/` also runs the **Android APK** GitHub
