@@ -30,3 +30,4 @@ Thumbs.db
 # Local runtime state (history DB, logs) — never commit
 *.sqlite3
 *.log
+.vercel
