@@ -22,6 +22,7 @@ classifiers = [
     "Topic :: Multimedia :: Video",
 ]
 dependencies = [
+    "Flask>=3.0",
     "yt-dlp>=2024.4.9",
     "rich>=13.7",
     "typer>=0.12",
@@ -47,6 +48,9 @@ where = ["src"]
 pythonpath = ["src"]
 testpaths = ["tests"]
 addopts = "-q"
+
+[tool.vercel]
+entrypoint = "main:app"
 
 [tool.ruff]
 line-length = 100

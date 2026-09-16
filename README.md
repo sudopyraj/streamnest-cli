@@ -85,6 +85,21 @@ streamnest
 media-dl
 ```
 
+### Web interface
+
+StreamNest also includes a lightweight web interface for Vercel and other
+WSGI hosts. Start it locally with:
+
+```bash
+flask --app main:app run
+```
+
+Open `http://127.0.0.1:5000`, paste a public YouTube or Instagram URL, inspect
+the metadata, and download video or audio in the browser. The web interface
+uses the same URL allow-list and public-content restrictions as the CLI. For
+large or long-running downloads, the CLI remains the recommended option
+because serverless hosts enforce request duration and temporary-storage limits.
+
 The main menu provides:
 
 ```text
@@ -230,6 +245,7 @@ streamnest-cli/
 │   ├── progress.py                 # Rich progress reporting
 │   ├── security.py                 # URL and path safety
 │   ├── ffmpeg.py                   # FFmpeg detection
+│   ├── web.py                      # Vercel-compatible web UI and API
 │   └── platforms/                  # YouTube and Instagram helpers
 └── tests/                          # offline automated tests
 ```
