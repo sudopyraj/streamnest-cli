@@ -5,6 +5,9 @@ downloading publicly accessible YouTube and Instagram media. It is designed to
 feel like a small terminal app: start it once, then use numbered menus and
 guided prompts instead of remembering flags or command syntax.
 
+[**Download the Android APK**](https://github.com/sudopyraj/streamnest-cli/releases/download/v1.0.0-android/app-debug.apk)
+ · [View the release](https://github.com/sudopyraj/streamnest-cli/releases/tag/v1.0.0-android)
+
 > Download only content you have permission to download. Respect platform
 > terms of service and applicable copyright law.
 
@@ -132,6 +135,11 @@ companion address, supports Android downloads, and does not request accounts,
 passwords, or browser cookies. See
 [`android-app/README.md`](android-app/README.md) for Android Studio build and
 installation instructions.
+
+The standalone Android APK can be downloaded directly from the
+[latest StreamNest Android release](https://github.com/sudopyraj/streamnest-cli/releases/tag/v1.0.0-android).
+It requires Android 10/API 29 or newer. Enable installation from unknown
+sources when installing the open-source APK outside Google Play.
 
 The main menu provides:
 
