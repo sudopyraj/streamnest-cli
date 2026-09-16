@@ -88,7 +88,7 @@ public final class MainActivity extends Activity {
             return;
         }
         download.setEnabled(false);
-        status.setText("Finding available formats…");
+        status.setText("Connecting to YouTube…");
         String selected = quality.getSelectedItem().toString();
         String qualityKey = selected.startsWith("Up to 1080") ? "1080p"
                 : selected.startsWith("Up to 720") ? "720p"
@@ -100,6 +100,7 @@ public final class MainActivity extends Activity {
                 JSONObject media = new JSONObject(result.toString());
                 JSONArray streams = media.getJSONArray("streams");
                 String title = safeName(media.getString("title"));
+                runOnUiThread(() -> status.setText("Found media. Downloading…"));
                 File work = new File(getCacheDir(), "streamnest");
                 if (!work.exists() && !work.mkdirs()) throw new IllegalStateException("Cannot create temporary directory.");
                 File output = new File(work, title + ".mp4");
@@ -120,7 +121,8 @@ public final class MainActivity extends Activity {
                 });
             } catch (Exception error) {
                 runOnUiThread(() -> {
-                    status.setText(error.getMessage() == null ? "Download failed." : error.getMessage());
+                    String message = error.getMessage() == null ? "Download failed." : error.getMessage();
+                    status.setText(message.replace("java.lang.Exception:", "").trim());
                     download.setEnabled(true);
                 });
             }

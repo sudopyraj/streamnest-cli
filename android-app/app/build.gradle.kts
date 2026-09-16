@@ -26,20 +26,26 @@ android {
                 "proguard-rules.pro",
             )
         }
+    }
 
-        chaquopy {
-            defaultConfig {
-                version = "3.11"
-                pip {
-                    install("yt-dlp")
-                }
-            }
+    flavorDimensions += "mode"
+    productFlavors {
+        create("standalone") {
+            dimension = "mode"
         }
-
     }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    chaquopy {
+        defaultConfig {
+            version = "3.11"
+            pip {
+                install("yt-dlp")
+            }
+        }
     }
 }

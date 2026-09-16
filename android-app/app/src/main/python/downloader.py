@@ -10,17 +10,21 @@ def resolve(url: str, quality: str) -> str:
     audio = "bestaudio[ext=m4a]"
     if height:
         video += f"[height<={height}]"
-    options = {"quiet": True, "no_warnings": True, "noplaylist": True}
+    selector = f"{video}+{audio}/{video}/best"
+    options = {
+        "quiet": True,
+        "no_warnings": True,
+        "noplaylist": True,
+        "format": selector,
+        "socket_timeout": 20,
+        "retries": 1,
+        "extractor_retries": 1,
+    }
     with yt_dlp.YoutubeDL(options) as ydl:
         info = ydl.extract_info(url, download=False)
     if info.get("_type") == "playlist" or info.get("entries"):
         raise ValueError("Playlists are not supported in standalone Android mode yet.")
     requested = info.get("requested_formats") or []
-    if not requested:
-        selector = f"{video}+{audio}/{video}/best"
-        with yt_dlp.YoutubeDL({**options, "format": selector}) as ydl:
-            info = ydl.extract_info(url, download=False)
-        requested = info.get("requested_formats") or []
     if requested:
         streams = [{"url": item["url"], "kind": "video" if item.get("vcodec") != "none" else "audio"}
                    for item in requested if item.get("url")]
