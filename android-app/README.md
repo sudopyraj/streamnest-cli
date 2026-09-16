@@ -7,7 +7,7 @@ than a shared hosting IP.
 
 ## Requirements
 
-- Android Studio Ladybug or newer
+- Android Studio Ladybug or newer (Gradle 8.9)
 - Android SDK 35
 - A running StreamNest companion on a PC in the same Wi-Fi network
 
