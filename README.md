@@ -1,16 +1,15 @@
-<h1 align="center">StreamNest</h1>
+<div align="center">
 
-<p align="center">
-  <strong>A beginner-friendly, open-source media downloader for publicly accessible content.</strong>
-</p>
+# StreamNest
 
-<p align="center">
-  Download supported media through an interactive desktop CLI, lightweight web interface, local PC companion, or experimental standalone Android application.
-</p>
+**A local-first, open-source media downloader for public YouTube and Instagram media.**
 
-<p align="center">
+StreamNest provides a guided terminal experience, a small local web interface, a
+browser-based PC companion, and an experimental standalone Android application.
+
+<p>
   <a href="https://github.com/sudopyraj/streamnest-cli">
-    <img src="https://img.shields.io/badge/GitHub-Repository-181717?style=flat-square&logo=github" alt="GitHub Repository">
+    <img src="https://img.shields.io/badge/GitHub-Repository-181717?style=flat-square&logo=github" alt="GitHub repository">
   </a>
   <a href="https://github.com/sudopyraj/streamnest-cli/blob/main/LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="MIT License">
@@ -18,26 +17,24 @@
   <a href="https://www.python.org/">
     <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python 3.10 or newer">
   </a>
-  <a href="https://github.com/sudopyraj/streamnest-cli/releases">
-    <img src="https://img.shields.io/badge/Android-Experimental-3DDC84?style=flat-square&logo=android&logoColor=white" alt="Experimental Android application">
+  <a href="https://github.com/sudopyraj/streamnest-cli/releases/tag/v1.0.2-android">
+    <img src="https://img.shields.io/badge/Android-Experimental-3DDC84?style=flat-square&logo=android&logoColor=white" alt="Experimental Android release">
   </a>
 </p>
 
-<p align="center">
-  <a href="#installation">Installation</a> ·
+<p>
+  <a href="#installation">Install</a> ·
   <a href="#usage">Usage</a> ·
-  <a href="#android">Android</a> ·
+  <a href="#android-application">Android</a> ·
   <a href="#contributing">Contributing</a> ·
   <a href="https://github.com/sudopyraj/streamnest-cli/releases">Releases</a>
 </p>
 
----
+</div>
 
-StreamNest is a free and open-source media downloader with a guided interactive interface for downloading publicly accessible media from supported platforms.
-
-Start the application, choose an option from the menu, paste a URL, select the desired quality, and follow the prompts. No account is required, no advertising is built into StreamNest, and the project does not operate a central download server for users.
-
-> **Important:** Whether you may download particular content depends on the content owner's permissions, applicable law, and the terms governing the relevant service. You are responsible for how you use the software.
+> **Scope:** StreamNest is designed for publicly accessible media from supported
+> YouTube and Instagram URLs. It is not a hosted download service and does not
+> intentionally bypass authentication, CAPTCHA, DRM, or other access controls.
 
 ## Contents
 
@@ -46,118 +43,89 @@ Start the application, choose an option from the menu, paste a URL, select the d
 - [Installation](#installation)
 - [Launching StreamNest](#launching-streamnest)
 - [Usage](#usage)
-- [Audio Only](#audio-only)
+- [Audio](#audio)
 - [Playlists](#playlists)
-- [Resume Support](#resume-support)
-- [Download History](#download-history)
+- [Resume support](#resume-support)
+- [History](#history)
 - [Settings](#settings)
-- [Web Interface](#web-interface)
-- [Local PC Companion](#local-pc-companion)
-- [Android](#android)
-- [Advanced Command Interface](#advanced-command-interface)
+- [Web interface](#web-interface)
+- [PC companion](#pc-companion)
+- [Android application](#android-application)
+- [Advanced CLI](#advanced-cli)
 - [Development](#development)
-- [Project Structure](#project-structure)
-- [Security and Privacy](#security-and-privacy)
-- [Responsible Use](#responsible-use)
+- [Project structure](#project-structure)
+- [Security and privacy](#security-and-privacy)
+- [Access-control boundaries](#access-control-boundaries)
+- [Responsible use](#responsible-use)
 - [Contributing](#contributing)
-- [Reporting Bugs](#reporting-bugs)
-- [Development Status](#development-status)
+- [Bug reports](#bug-reports)
 - [License](#license)
 - [Disclaimer](#disclaimer)
-- [Project Philosophy](#project-philosophy)
+- [Project philosophy](#project-philosophy)
 
 ## Features
 
-### Guided interactive interface
+### Interactive CLI
 
-StreamNest is primarily designed around a beginner-friendly terminal interface:
-
-```text
-1. Download Media
-2. Audio Only
-3. Download Playlist
-4. Download History
-5. Settings
-6. Help
-7. Exit
-```
-
-Normal use does not require memorizing complicated command-line flags.
-
-### Supported workflows
-
-- YouTube videos
-- YouTube Shorts
-- YouTube playlists
-- Available public subtitles
-- Public Instagram posts
-- Public Instagram reels
-- Audio extraction
-- Playlist selection and ranges
-- Resume support for interrupted downloads
-
-### Quality options
-
-Choose from:
-
-- Best Quality
-- Balanced
-- Small File
-- Custom
-- Maximum File Size
-- Format List
-
-Playlist selections can use ranges and individual items. For example:
+The primary desktop interface is an interactive terminal application with the
+following top-level menu:
 
 ```text
-1-5,7,10-12
+Download Media
+Audio Only
+Download Playlist
+Download History
+Settings
+Help
+Exit
 ```
 
-This selects items `1, 2, 3, 4, 5, 7, 10, 11, 12`.
+### Supported media workflows
 
-### Audio formats
+- Public YouTube videos, Shorts, live URLs, and playlists
+- Public Instagram posts, reels, and IGTV URLs
+- Video downloads with source-dependent format and resolution choices
+- Audio-only downloads
+- Optional public subtitle download and embedding for supported YouTube media
+- Playlist downloads of all items or a selected subset
 
-Depending on the source and installed tools, available formats can include:
+### Quality and download controls
 
-- MP3
-- M4A
-- Opus
-- Original audio
+- Best, balanced (up to 1080p), or small-file (up to 480p) modes
+- Custom resolution, frame-rate, and container selection
+- Format inspection before downloading
+- Maximum file-size selection
+- MP4, WebM, or original video output where the source supports it
+- Progress information including size, speed, and estimated remaining time
+- Bounded fragment and playlist concurrency
 
-### Download management
+### Local management
 
-- Resume interrupted `.part` downloads
-- Rich progress display
-- Download speed
-- Estimated time remaining
-- File size
-- SQLite download history
-- Configurable download directory
-- Configurable concurrency
-- Configurable overwrite behavior
-- Configurable filename templates
+- Resume prompts for interrupted `.part` and `.ytdl` downloads
+- SQLite download history with viewing, searching, and clearing
+- Configurable download directory, quality, formats, concurrency, overwrite
+  behavior, filename template, and terminal theme
+- Local configuration and history; no StreamNest account is required
 
 ## Requirements
 
-### Desktop
+For the desktop application:
 
 - Python 3.10 or newer
-- Internet connection
-- FFmpeg recommended
+- Internet access
+- FFmpeg for merging separate streams, audio conversion, and subtitle
+  embedding when those operations are needed
 
-FFmpeg may be required for:
-
-- Merging separate video and audio streams
-- Audio conversion
-- Subtitle embedding
-
-Basic downloads may work without FFmpeg when the source provides a compatible single stream.
+Basic single-stream downloads may work without FFmpeg. StreamNest detects
+FFmpeg from `PATH` and common system locations.
 
 ## Installation
 
-### Linux and macOS
+The package metadata defines both `streamnest` and `media-dl` console commands.
+The following instructions install the project in an isolated virtual
+environment.
 
-Open a terminal and run:
+### Linux / macOS
 
 ```bash
 git clone https://github.com/sudopyraj/streamnest-cli.git
@@ -172,8 +140,6 @@ python -m pip install -e .
 
 ### Windows PowerShell
 
-Open PowerShell and run:
-
 ```powershell
 git clone https://github.com/sudopyraj/streamnest-cli.git
 cd streamnest-cli
@@ -185,11 +151,44 @@ python -m pip install --upgrade pip
 python -m pip install -e .
 ```
 
-> If PowerShell prevents activation because of its execution policy, use the appropriate PowerShell execution-policy configuration for your environment or run the application with the environment's Python executable directly.
+If PowerShell blocks activation, use the Python executable inside `.venv`
+directly or apply the execution-policy change appropriate for your environment.
+
+### FFmpeg
+
+FFmpeg is optional for simple downloads but recommended for the full feature
+set. The project displays platform-specific installation guidance when it is
+needed.
+
+<details>
+<summary>Common installation commands</summary>
+
+```bash
+# Debian / Ubuntu
+sudo apt install ffmpeg
+
+# Fedora
+sudo dnf install ffmpeg
+
+# Arch Linux
+sudo pacman -S ffmpeg
+
+# macOS with Homebrew
+brew install ffmpeg
+```
+
+On Windows, the project suggests:
+
+```powershell
+winget install Gyan.FFmpeg
+```
+
+</details>
 
 ## Launching StreamNest
 
-After installation, launch StreamNest with either command:
+After installation, start the interactive desktop CLI with either installed
+command:
 
 ```bash
 streamnest
@@ -201,544 +200,338 @@ or:
 media-dl
 ```
 
-When running directly from the cloned repository, use:
+When running directly from a checkout, use:
 
 ```bash
 python main.py
 ```
 
-The desktop CLI is the primary StreamNest interface.
+The installed console commands and `python main.py` all start the same
+interactive CLI.
 
 ## Usage
 
-Start the application:
+The normal workflow is:
 
-```bash
-python main.py
-```
-
-Choose:
-
-```text
-1. Download Media
-```
-
-Then:
-
-1. Paste a supported public URL.
-2. StreamNest validates the URL.
-3. StreamNest retrieves available metadata.
-4. Review the available information.
-5. Select the desired quality.
-6. Select the output format when available.
+1. Start StreamNest.
+2. Select an option.
+3. Enter a supported public URL.
+4. Review the retrieved metadata.
+5. Select a quality or format.
+6. Select a container or audio format when available.
 7. Confirm the download.
-8. Wait for the progress display to finish.
-9. The completed file path will be shown at the end.
+8. Monitor the progress display.
+9. Open the completed file path shown by StreamNest.
 
-Example workflow:
+For a video, choose **Download Media**, then choose one of:
 
-```text
-StreamNest
+- **Best Quality**
+- **Balanced (up to 1080p)**
+- **Small File (up to 480p)**
+- **Custom**
+- **Maximum file size**
+- **Choose from format list**
 
-1. Download Media
-2. Audio Only
-3. Download Playlist
-4. Download History
-5. Settings
-6. Help
-7. Exit
+When subtitles are available for a supported YouTube video, StreamNest can
+download them and optionally embed them into the output. Subtitle embedding
+requires FFmpeg.
 
-Select an option: 1
+## Audio
 
-Enter media URL:
-> https://example.com/...
+Choose **Audio Only** from the interactive menu. The available quality choices
+are best available, 320 kbps, 256 kbps, 192 kbps, and 128 kbps, subject to the
+source.
 
-Checking URL...
-Retrieving media information...
-
-Title: Example Video
-Duration: 05:42
-
-Choose quality:
-1. Best Quality
-2. Balanced
-3. Small File
-4. Custom
-5. Maximum File Size
-6. Choose from format list
-
-Select: 2
-```
-
-## Audio Only
-
-Choose:
-
-```text
-2. Audio Only
-```
-
-Then:
-
-1. Enter the supported public media URL.
-2. Select an audio quality.
-3. Select the desired output format.
-4. Confirm the download.
-
-Available formats can include:
+Supported output choices are:
 
 ```text
 MP3
 M4A
 Opus
-Original
+Original (no conversion)
 ```
 
-FFmpeg may be required when conversion is necessary.
+Converting to MP3, M4A, or Opus requires FFmpeg. Selecting **Original** avoids
+conversion and keeps the source audio format where possible.
 
 ## Playlists
 
-Choose:
-
-```text
-3. Download Playlist
-```
-
-You can download the entire playlist or select individual items.
-
-For example:
+Choose **Download Playlist**, paste a supported playlist URL, and select either
+**Download all** or **Select videos**. Selection input accepts one-based item
+numbers, ranges, or a comma-separated combination:
 
 ```text
 1-5,7,10-12
 ```
 
-means:
+This selects items 1 through 5, item 7, and items 10 through 12. You can then
+apply best, balanced, small-file, or custom video quality to the selected
+items. Playlist work uses the configured bounded concurrency rather than an
+unlimited number of workers.
 
-```text
-1, 2, 3, 4, 5, 7, 10, 11, 12
-```
+## Resume support
 
-StreamNest uses bounded concurrency rather than creating an unlimited number of simultaneous downloads.
+The desktop downloader enables yt-dlp continuation and keeps interrupted
+partial files. If StreamNest finds matching `.part` or `.ytdl` files in the
+configured download directory, the interactive flow shows their rough progress
+and offers to resume or remove them.
 
-## Resume Support
+Resume behavior depends on the source and the files still being compatible.
 
-If a download is interrupted, StreamNest can preserve its partial file.
+## History
 
-When you start the same download again, StreamNest can offer to:
+StreamNest records local download metadata in SQLite. The history menu can:
 
-- Resume the download
-- Remove the partial file and restart
+- View recent downloads
+- Search by title, URL, or platform
+- Clear all entries after confirmation
+- Show recorded total size
 
-This can prevent unnecessary re-downloading when a connection is interrupted.
-
-## Download History
-
-StreamNest maintains a local SQLite database for download history.
-
-From **Download History**, you can:
-
-- View previous downloads
-- Search by title
-- Search by URL
-- Search by platform
-- Clear history after confirmation
-
-History is stored locally rather than being uploaded to a StreamNest server.
-
-## Settings
-
-The **Settings** menu can configure:
-
-- Download directory
-- Default video quality
-- Default video container
-- Default audio quality
-- Default audio format
-- Maximum concurrent downloads
-- Overwrite behavior
-- Filename template
-- Terminal theme
-- Reset to defaults
-
-### Local paths
-
-Configuration:
-
-```text
-~/.config/media-downloader/config.toml
-```
-
-History:
+The default database is:
 
 ```text
 ~/.local/share/media-downloader/history.sqlite3
 ```
 
-Logs:
+`XDG_DATA_HOME` or `MEDIA_DOWNLOADER_DATA_DIR` can change the data location.
+History stores metadata such as URL, title, platform, timestamp, selected
+format, output path, and file size; it does not read or persist passwords,
+tokens, or browser cookies.
+
+## Settings
+
+The interactive **Settings** menu supports:
+
+| Setting | Values or purpose |
+| --- | --- |
+| Download directory | Defaults to `~/Downloads` |
+| Default video quality | `best`, `2160p` through `240p` |
+| Default audio quality | `best`, `320`, `256`, `192`, `128` |
+| Default audio format | `mp3`, `m4a`, `opus`, `original` |
+| Default video format | `mp4`, `webm`, `original` |
+| Maximum concurrent downloads | Integer from 1 to 8 |
+| Overwrite existing files | Enabled or disabled |
+| Filename template | A safe filename-only yt-dlp template |
+| Theme | `dark`, `light`, or `mono` |
+
+The default configuration file is:
 
 ```text
-~/.local/share/media-downloader/logs/
+~/.config/media-downloader/config.toml
 ```
 
-## Install FFmpeg
+`XDG_CONFIG_HOME` or `MEDIA_DOWNLOADER_CONFIG_DIR` can change the configuration
+location. Settings can also be inspected or changed with the `config`
+subcommand; see [Advanced CLI](#advanced-cli).
 
-FFmpeg is strongly recommended for the best experience.
+## Web interface
 
-<details>
-<summary><strong>Linux</strong></summary>
-
-Ubuntu / Debian:
-
-```bash
-sudo apt install ffmpeg
-```
-
-Fedora:
-
-```bash
-sudo dnf install ffmpeg
-```
-
-Arch Linux:
-
-```bash
-sudo pacman -S ffmpeg
-```
-
-</details>
-
-<details>
-<summary><strong>macOS</strong></summary>
-
-With Homebrew:
-
-```bash
-brew install ffmpeg
-```
-
-</details>
-
-<details>
-<summary><strong>Windows</strong></summary>
-
-With WinGet:
-
-```powershell
-winget install Gyan.FFmpeg
-```
-
-</details>
-
-StreamNest attempts to detect FFmpeg automatically.
-
-## Web Interface
-
-StreamNest contains a lightweight web interface.
-
-Run:
+StreamNest includes a lightweight Flask web interface. From the repository
+root, start it with:
 
 ```bash
 flask --app main:app run
 ```
 
-Then open:
+Then open <http://127.0.0.1:5000>.
 
-<http://127.0.0.1:5000>
+The interface accepts public YouTube and Instagram URLs, displays metadata, and
+offers the supported video and audio choices exposed by the web implementation.
+It runs locally and is not intended to be a centralized public download
+service. Long-running or large downloads may be unsuitable for a hosted
+environment because they depend on the machine running the Flask process.
 
-The web interface follows the same public-content and URL-validation restrictions as the CLI.
+## PC companion
 
-> **Important:** The web interface is not intended to be a public centralized download service.
-
-Large downloads can be unsuitable for serverless hosting because of:
-
-- Request-duration limits
-- Temporary storage limits
-- Bandwidth limitations
-- Platform restrictions
-- Resource limitations
-
-For large or long-running downloads, the local CLI or standalone application is preferred.
-
-## Local PC Companion
-
-StreamNest can also run a local companion service.
-
-Start it with:
+`companion.py` runs the same web application as a local companion service:
 
 ```bash
 python companion.py
 ```
 
-By default, it can be accessed from the local computer.
-
-To allow another device on the same trusted network to connect:
+By default it binds to `127.0.0.1` on port 5000, so it is reachable only from
+the computer running it. To let another device on a trusted local network use
+the companion, explicitly bind to all interfaces:
 
 ```bash
 python companion.py --host 0.0.0.0
 ```
 
-Then open the following address on the other device:
+On the other device, open:
 
 ```text
 http://<computer-lan-ip>:5000
 ```
 
-> **Security warning:** Only expose the companion service to networks you trust. Do not expose it directly to the public internet unless you have independently implemented appropriate authentication, encryption, and network security.
+> **Security warning:** `--host 0.0.0.0` makes the service reachable on the
+> computer's network interfaces. Use it only on a trusted network. The
+> companion has no built-in user authentication or transport encryption; do not
+> expose it directly to the public internet.
 
-## Android
+## 📱 Android application
 
-StreamNest has a separate Android implementation with two Android-related workflows.
+The repository documents two separate Android workflows. They have different
+architectures and capabilities.
 
-### Android companion
+### Android Companion
 
-The Android interface can connect to a StreamNest companion running on a computer.
-
-```text
-Android phone
-      │
-      │ local network
-      ▼
-Computer running StreamNest
-      │
-      ▼
-Internet
-```
-
-This workflow requires:
-
-- An Android phone
-- A computer running StreamNest
-- A shared local network connection
-
-### Standalone Android application
-
-The standalone Android application is intended to run the downloader directly on the Android device.
+The Android companion workflow uses a phone or tablet browser to connect to the
+PC companion:
 
 ```text
-Android application
-        │
-        ▼
-Android device network
-        │
-        ▼
-Internet
+Phone or tablet browser
+          │ local network
+          ▼
+Computer running `python companion.py`
+          │
+          ▼
+        Internet
 ```
 
-A computer or StreamNest server is not required for this standalone architecture.
+The computer runs StreamNest and performs the download. Start the companion
+with `python companion.py`; use `--host 0.0.0.0` only on a trusted local
+network. This browser-based workflow is separate from the standalone APK.
 
-### Android status: Experimental
+### Standalone Android Application
 
-The standalone Android application is under active development.
+> 🧪 **Experimental**
 
-Basic downloads have been tested successfully, but the Android implementation may currently have limitations involving:
+The `android-app/` project runs a small downloader directly on Android. Basic
+downloads can work successfully, but larger downloads and longer videos are
+currently less reliable and may take an impractical amount of time. The
+desktop CLI remains the primary development target. The standalone APK is
+provided primarily for testing and experimentation, not as a production-ready
+or fully stable replacement for the desktop application. Android behavior can
+vary with the device, Android version, available storage, network, and system
+background restrictions; incomplete or changing behavior is expected.
 
-- Download speed
-- Large files
-- Long videos
-- Format detection
-- Device compatibility
-- Media processing
-- Background downloads
+The current standalone implementation:
 
-The APK is provided primarily for testing while these areas are improved.
+- Accepts public YouTube URLs matching `youtube.com` or `youtu.be`
+- Offers **Best available**, **Up to 1080p**, **Up to 720p**, and **Up to 480p**
+  choices
+- Resolves video and audio streams with the embedded `yt-dlp` runtime
+- Downloads the streams to the app cache, combines compatible tracks with
+  Android's native `MediaMuxer`, and publishes an MP4 to Downloads
+- Requires no PC, account, password, or browser cookie for this standalone
+  workflow
 
-The current standalone APK targets:
+It does not implement the desktop CLI's Instagram support, interactive format
+list, audio-only workflow, subtitle workflow, playlist workflow, history, or
+settings.
 
-```text
-Android 10 / API 29+
-```
+#### Known Android limitations
 
-When installing an APK manually, Android may require permission to install applications from the relevant external source. Only install APKs from a source you trust.
+The following limitations are either documented current behavior or directly
+visible in the implementation. They describe the current state, not promised
+fixes:
 
-### Android releases
+| Area | Status | Description |
+| --- | --- | --- |
+| Basic downloads | Working for basic cases | Basic public YouTube downloads have been tested successfully. This does not establish reliability for large files, long videos, every format, or every device. |
+| Large files | Limited | Each stream is written to the app cache before the completed MP4 is copied to Downloads. Large media therefore needs space for intermediate streams and the final file; the app performs no size or disk-space preflight. Larger downloads may be significantly slower, unreliable, or fail. No verified standalone workaround is currently documented. |
+| Long videos | Limited | Long-duration downloads use the same foreground activity workflow and may take an impractical amount of time or become unreliable. There is no verified standalone workaround beyond trying a shorter or smaller download. |
+| Download speed | Inconsistent | Transfers use a simple sequential `HttpURLConnection` loop with fixed timeouts and no adaptive throughput or byte-level progress reporting. Performance can vary significantly with the network, device, and source. |
+| Format detection | Limited | The app does not show the source's available formats. It requests MP4 video and M4A audio through four fixed quality presets; a source without a compatible match can fail instead of opening the desktop format-selection flow. |
+| Playlists | Not implemented | The embedded downloader explicitly rejects playlist metadata. Only individual public YouTube media items are supported. There is no workaround in the standalone app; use the desktop CLI for playlists. |
+| Background downloads | Limited and unreliable | Downloads are started by the activity and run on its single executor. There is no foreground service, persistent notification, queued download manager, or resume queue; leaving the activity or Android reclaiming the process can interrupt the operation. |
+| Storage | Basic file handling | Intermediate `.part` files are stored in the app cache and overwritten on a new attempt. The final file is written to Downloads through `MediaStore` on Android 10+, with no user-selected output directory, overwrite setting, cleanup flow, or resume support. Android storage behavior can therefore affect completion. |
+| Media processing | Limited | The standalone app does not run FFmpeg or transcode. It relies on Android's native `MediaMuxer` and compatible MP4 video/audio tracks; unsupported codecs or tracks can fail rather than being converted. This is separate from the desktop CLI's FFmpeg-based processing. |
+| Device compatibility | Varies | The project declares Android 10+ and ABI filters for `arm64-v8a`, `armeabi-v7a`, and `x86_64`, but behavior can still differ across Android versions, hardware, codecs, storage implementations, and system restrictions. |
+| Access-restricted media | Unsupported by design | Private, login-gated, age-restricted, CAPTCHA-protected, or otherwise unavailable media can fail. The app does not provide an authentication or access-control bypass. |
 
-The current Android release can be found on the project's GitHub Releases page:
+These are limitations and work-in-progress areas, not a stability rating.
+Users should not expect the Android APK to provide the same reliability as the
+desktop CLI yet. Some functionality may not work reliably, and bugs or
+incomplete behavior are expected during development.
 
-<https://github.com/sudopyraj/streamnest-cli/releases>
+Current verified build requirements:
 
-Current experimental release:
+- Android 10 or newer (API 29+)
+- Internet access
+- Android Studio Ladybug or newer for local builds
+- Android SDK 35
+- Java 17 and Gradle 8.9 for the repository build workflow
+
+The latest verified experimental Android release is:
 
 <https://github.com/sudopyraj/streamnest-cli/releases/tag/v1.0.2-android>
 
-The Android APK is an open-source project artifact and is not distributed through a centralized StreamNest download server.
+All releases are listed at:
 
-## Advanced Command Interface
+<https://github.com/sudopyraj/streamnest-cli/releases>
 
-The interactive interface is recommended for normal users.
-
-Experienced users and scripts can use the command interface:
+To build the debug APK, open `android-app/` in Android Studio and choose
+**Build > Build APK(s)**. The repository workflow also builds it with:
 
 ```bash
+cd android-app
+gradle :app:assembleStandaloneDebug --no-daemon
+```
+
+The resulting APK is:
+
+```text
+android-app/app/build/outputs/apk/standalone/debug/app-standalone-debug.apk
+```
+
+## Advanced CLI
+
+The interactive interface is recommended for normal use. The `media-dl`
+command also supports one-shot downloads and maintenance commands:
+
+```bash
+# Interactive mode
+media-dl
+
+# Video downloads
 media-dl "URL"
 media-dl "URL" --quality 1080p
 media-dl "URL" --mode best
+media-dl "URL" --output ~/Videos
+media-dl "URL" --max-size 50
+
+# Audio and format inspection
 media-dl "URL" --audio --format mp3
 media-dl "URL" --list-formats
-media-dl "URL" --output ~/Videos
+
+# Playlists and subtitles
 media-dl "PLAYLIST_URL" --playlist-items 1-5,7
+media-dl "URL" --subtitles en --embed-subs
+
+# History and configuration
 media-dl history --search "cats"
+media-dl history --clear
+media-dl config --path
+media-dl config --set theme=light
 media-dl config --reset
+
+# Detailed diagnostics
 media-dl --debug "URL"
 ```
 
-These commands are optional. The normal interactive interface does not require users to remember them.
+`--mode` accepts `best`, `balanced`, or `small`. `--quality` accepts video
+resolutions from `240p` through `2160p`, or audio bitrates when used with
+`--audio`. Use `media-dl --help` for the complete Typer-generated help.
 
 ## Development
 
-Clone the repository:
+Clone the repository and create a development environment:
 
 ```bash
 git clone https://github.com/sudopyraj/streamnest-cli.git
 cd streamnest-cli
-```
 
-Create the development environment:
-
-```bash
 python -m venv .venv
 source .venv/bin/activate
-```
-
-Install development dependencies:
-
-```bash
 python -m pip install -e ".[dev]"
 ```
 
-Run tests:
+On Windows PowerShell, activate with:
 
-```bash
-python -m pytest
+```powershell
+.venv\Scripts\Activate.ps1
 ```
-
-The test suite is designed to work offline and covers areas including:
-
-- Configuration
-- History
-- Format selection
-- Download-engine wiring
-- URL validation
-- Filename safety
-- Utility parsing
-
-## Project Structure
-
-```text
-streamnest-cli/
-├── main.py
-├── companion.py
-├── pyproject.toml
-├── LICENSE
-├── README.md
-│
-├── src/
-│   └── media_downloader/
-│       ├── cli.py
-│       ├── config.py
-│       ├── database.py
-│       ├── downloader.py
-│       ├── formats.py
-│       ├── history.py
-│       ├── progress.py
-│       ├── security.py
-│       ├── ffmpeg.py
-│       ├── web.py
-│       └── platforms/
-│
-├── android-app/
-│   └── README.md
-│
-└── tests/
-```
-
-## Security and Privacy
-
-StreamNest is designed with a public-content-only scope and treats externally supplied information as untrusted.
-
-The project includes protections such as:
-
-- Supported-host URL allow-listing
-- URL validation
-- Filename sanitisation
-- Path traversal protection
-- Safe output-path handling
-- Controlled subprocess execution
-- No shell execution of user-controlled download input
-- Local configuration and history storage
-
-The application uses protected subprocess execution rather than passing user-controlled input through a shell.
-
-### Local data
-
-StreamNest stores download history and configuration locally.
-
-Depending on the features you use, local data can include:
-
-- Media title
-- URL
-- Platform
-- Download status
-- Timestamp
-- Output path
-- File size
-
-StreamNest does not intentionally store:
-
-- Passwords
-- Authentication tokens
-- Browser cookies
-- Private account credentials
-
-## Responsible Use
-
-StreamNest intentionally focuses on publicly accessible media. The software itself does not determine whether a particular download is permitted.
-
-The project does not intentionally provide functionality to:
-
-- Access private accounts
-- Bypass authentication or login requirements
-- Bypass CAPTCHA
-- Bypass DRM
-- Bypass other access controls
-- Obtain passwords or authentication tokens
-- Use private account cookies
-- Circumvent technical restrictions protecting private or restricted content
-
-Before downloading content, make sure you have the necessary permission or other applicable legal basis to do so.
-
-You are responsible for complying with:
-
-- Applicable copyright law
-- Applicable local laws and regulations
-- The terms governing the platform or service
-- Restrictions imposed by the content owner
-
-For example, downloading your own publicly accessible video for backup is different from downloading and redistributing someone else's copyrighted material without permission.
-
-Do not use StreamNest to obtain or redistribute content you are not legally permitted to access or copy.
-
-If a download fails because the platform requires authentication, CAPTCHA verification, DRM authorization, or another access-control mechanism, do not attempt to circumvent that restriction. Report the failure instead.
-
-The StreamNest project does not provide legal advice and does not guarantee that every use of the software is lawful in every jurisdiction.
-
-## Contributing
-
-StreamNest is an open-source project and contributions are welcome.
-
-Useful contributions include:
-
-- Bug fixes
-- Tests
-- Documentation
-- UI improvements
-- Performance profiling
-- Android improvements
-- Accessibility improvements
-- Security reviews
-- Platform compatibility fixes
-- Code cleanup
-
-Before submitting a large change, check existing issues and discussions so work is not duplicated.
 
 Run the test suite with:
 
@@ -746,55 +539,122 @@ Run the test suite with:
 python -m pytest
 ```
 
-Please keep changes focused and avoid introducing functionality that defeats authentication, CAPTCHA, DRM, or other access controls.
+The project uses `pytest`; the test configuration is defined in
+`pyproject.toml` and targets the `tests/` directory.
 
-### Security reports
+## Project structure
 
-Security improvements and vulnerability reports are welcome.
+```text
+streamnest-cli/
+├── main.py                         # Checkout launcher and Flask entry point
+├── companion.py                    # Local companion server
+├── pyproject.toml                  # Package metadata, scripts, and test config
+├── LICENSE
+├── README.md
+├── src/
+│   └── media_downloader/
+│       ├── cli.py                  # Interactive and one-shot CLI
+│       ├── config.py               # TOML configuration
+│       ├── database.py             # SQLite history storage
+│       ├── downloader.py           # yt-dlp download engine
+│       ├── formats.py              # Format discovery and selectors
+│       ├── history.py              # History UI
+│       ├── progress.py             # Progress reporting
+│       ├── security.py             # URL and path validation
+│       ├── ffmpeg.py               # FFmpeg detection and execution
+│       ├── web.py                  # Flask web interface
+│       └── platforms/              # Platform-specific helpers
+├── android-app/                    # Experimental standalone Android app
+└── tests/                          # Python test suite
+```
 
-If you discover a security vulnerability, avoid publicly posting sensitive exploit details in a normal issue until the project maintainer has had an opportunity to review it.
+## Security and privacy
 
-## Reporting Bugs
+StreamNest treats URLs, metadata, and filenames from external services as
+untrusted input. The implementation includes:
 
-When reporting a bug, include as much non-sensitive information as possible:
+- Exact supported-host allow-listing for YouTube and Instagram
+- HTTP/HTTPS URL validation and rejection of embedded credentials and IP
+  literals
+- Filename sanitisation for cross-platform illegal characters and reserved
+  names
+- Path traversal and absolute-path checks for output files
+- Filename-template validation that rejects path separators and `..`
+- Controlled subprocess execution with argument lists rather than a shell
+- Local-only configuration and SQLite history storage
 
-- Operating system
-- Python version
+User-controlled download input is not intentionally passed through a shell.
+StreamNest does not intentionally read or store passwords, authentication
+tokens, or browser cookies.
+
+## Access-control boundaries
+
+StreamNest does not intentionally provide functionality to:
+
+- Access private accounts or private media
+- Bypass authentication or login requirements
+- Bypass CAPTCHA
+- Bypass DRM
+- Bypass other access controls or technical restrictions
+- Obtain passwords or authentication tokens
+- Use private account cookies
+- Circumvent restrictions protecting private or restricted content
+
+If a service requires authentication or another access-control mechanism,
+StreamNest treats that as outside the supported scope rather than attempting a
+bypass.
+
+## Responsible use
+
+Whether downloading particular content is permitted depends on applicable law,
+copyright restrictions, content-owner permissions, and the relevant
+platform/service terms. Users are responsible for their use of StreamNest and
+for ensuring they have permission or another applicable legal basis to
+download and use the content.
+
+The project does not provide legal advice or guarantee that a particular use is
+lawful in every jurisdiction.
+
+## Contributing
+
+Contributions are welcome in focused areas such as bug fixes, tests,
+documentation, interface improvements, platform compatibility, accessibility,
+performance, Android development, and security review.
+
+Before making a large change, check existing issues and keep the change aligned
+with the project's public-content and access-control boundaries. Run:
+
+```bash
+python -m pytest
+```
+
+Please do not add functionality intended to defeat authentication, CAPTCHA,
+DRM, or other access controls.
+
+## Bug reports
+
+Include useful, non-sensitive diagnostic information such as:
+
+- Operating system and Python version
 - StreamNest version
-- Android version, if applicable
-- Device model, if applicable
-- Selected quality
+- Android version and device model, when relevant
+- The interface and options used
 - Approximate media duration
 - Whether FFmpeg is installed
-- Relevant error message
-- Debug logs with private information removed
+- The relevant error message or redacted debug output
 
-Do not post:
+Never publish:
 
 - Passwords
-- Browser cookies
 - Authentication tokens
+- Browser cookies
 - Private URLs
 - Private account information
 - Personal data
 
-## Development Status
-
-StreamNest is an actively developed open-source project.
-
-The desktop CLI is the primary development target.
-
-The standalone Android application is currently experimental, with ongoing work focused on:
-
-- Download performance
-- Large-file reliability
-- Format detection
-- Background downloading
-- Android storage handling
-- Media processing
-- Device compatibility
-
-The web interface and PC companion are additional interfaces rather than replacements for the core application.
+For a suspected security vulnerability, avoid posting sensitive exploit
+details in a public issue until the maintainer has had an opportunity to
+review it.
 
 ## License
 
@@ -804,44 +664,35 @@ Copyright (c) 2026 Prince Raj
 
 See [`LICENSE`](LICENSE) for the complete license text.
 
-The MIT License permits use, modification, and distribution subject to its terms.
-
 ## Disclaimer
 
-StreamNest is provided “as is”, without warranties of any kind, to the extent permitted by applicable law.
+StreamNest is provided “as is”, without warranties of any kind, to the extent
+permitted by applicable law. Third-party platforms can change their services,
+availability, APIs, technical behavior, or terms at any time. StreamNest does
+not control those services, and compatibility or successful downloads are not
+guaranteed.
 
-The project does not guarantee:
+Users are responsible for their own use of the software and must comply with
+applicable law, content-owner permissions, and relevant service terms.
 
-- Availability of any particular platform
-- Continued compatibility with third-party services
-- Successful downloads of every public URL
-- Uninterrupted operation
-- Compatibility with every device
-- That a particular use of the software is legally permitted
+## Project philosophy
 
-Third-party platforms can change their services, APIs, technical behavior, or terms at any time. StreamNest does not control those third-party services.
+StreamNest aims to keep the project:
 
-Users are responsible for their own use of the software and for ensuring that their downloads comply with applicable law, content-owner permissions, and relevant service terms.
+- Open source and transparent
+- Simple to understand and use
+- Local-first where practical
+- Friendly to beginners without hiding advanced controls
+- Privacy-conscious
+- Security-conscious
+- Focused on responsible support for public content
 
-## Project Philosophy
+The goal is a useful tool that people can inspect, run locally, and improve —
+not a system for defeating platform security.
 
-> **“A useful open-source tool should be simple, transparent, and respectful of its users.”**
+## Links
 
-StreamNest aims to provide:
-
-- No built-in advertising
-- No mandatory account
-- Transparent source code
-- Local-first operation where practical
-- Beginner-friendly interfaces
-- Privacy-conscious design
-- Security-conscious implementation
-- Responsible public-content support
-
-The goal is not to defeat platform security. The goal is to build useful open-source software that people can understand, inspect, improve, and contribute to.
-
-## Repository
-
-**GitHub:** <https://github.com/sudopyraj/streamnest-cli>
-
-If you find the project useful, consider starring the repository or contributing improvements.
+- **Repository:** <https://github.com/sudopyraj/streamnest-cli>
+- **Issues:** <https://github.com/sudopyraj/streamnest-cli/issues>
+- **Latest Android release:** <https://github.com/sudopyraj/streamnest-cli/releases/tag/v1.0.2-android>
+- **All releases:** <https://github.com/sudopyraj/streamnest-cli/releases>
